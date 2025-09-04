@@ -13,7 +13,7 @@ export function ipcHandlers(mainWindow: Electron.BrowserWindow | null) {
   })
 
   ipcMain.on("ipc-load-images", (event) => {
-    exec('docker image ls', (error, stdout, stderr) => {
+    exec("docker image ls -q | xargs -I {} docker inspect {} | jq '[.[] | {id: .Id, repository: .RepoTags, size: .Size}]'", (error, stdout, stderr) => {
       if (error) {
         return event.reply("ipc-error-event", error);
       }

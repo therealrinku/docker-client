@@ -4,7 +4,7 @@ import { FiDatabase, FiImage } from 'react-icons/fi';
 import { useState } from 'react';
 
 export default function Home() {
-  const { isAppLoading, fetchImages, fetchContainers, containers } = useAppState();
+  const { isAppLoading, fetchImages, fetchContainers, containers, images } = useAppState();
   const [selectedTab, setSelectedTab] = useState<"containers" | "images">("containers")
 
   if (isAppLoading) {
@@ -33,6 +33,18 @@ export default function Home() {
 
     } else if (selectedTab === "images") {
       fetchImages();
+
+      return (
+        <div className='flex flex-col gap-2'>
+          <p className='font-bold'>Images</p>
+          {images.map(image=> {
+            return <div key={image.id} className='bg-gray-200 w-full p-2 flex items-center gap-2'>
+              <p>{image.repository.join(",")}</p>
+              <p className='font-bold'>{image.size}</p>
+            </div>
+          })}
+        </div>
+      )
     }
   }
 
