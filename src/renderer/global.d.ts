@@ -13,6 +13,16 @@ export interface IServer {
   headers: Array<IHeader>;
 }
 
+export interface IImage {
+  id: number;
+  name: string;
+}
+
+export interface IContainer {
+  id: number;
+  name: string;
+}
+
 export interface IEndpoint {
   id: number;
   type: string;

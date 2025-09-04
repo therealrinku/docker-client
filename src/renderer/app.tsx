@@ -1,6 +1,6 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import { RootContextProvider } from './context/root-context';
-import Servers from './pages/servers';
+import Home from './pages/home';
 import Server from './pages/server';
 import AddServer from './pages/add-server';
 import AddEndpoint from './pages/add-endpoint';
@@ -13,7 +13,7 @@ export default function App() {
     <RootContextProvider>
       <Router>
         <Routes>
-          <Route path="/" Component={Servers} />
+          <Route path="/" Component={Home} />
           <Route path="/server/:server_id" Component={Server} />
           <Route path="/new-server" Component={AddServer} />
           <Route path="/new-endpoint/:server_id" Component={AddEndpoint} />

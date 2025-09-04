@@ -1,14 +1,6 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels =
-  | 'start-server'
-  | 'stop-server'
-  | 'restart-server'
-  | 'error-happened'
-  | 'fs-load-servers'
-  | 'fs-add-server'
-  | 'fs-update-server'
-  | 'fs-delete-server';
+export type Channels = 'ipc-load-images' | 'ipc-load-containers' | 'ipc-error-event';
 
 const electronHandler = {
   ipcRenderer: {
