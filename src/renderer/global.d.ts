@@ -21,6 +21,7 @@ export interface IImage {
 export interface IContainer {
   id: number;
   name: string;
+  status: string;
 }
 
 export interface IEndpoint {

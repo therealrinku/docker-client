@@ -4,7 +4,7 @@ import { FiDatabase, FiImage } from 'react-icons/fi';
 import { useState } from 'react';
 
 export default function Home() {
-  const { isAppLoading } = useAppState();
+  const { isAppLoading, fetchImages, fetchContainers, containers } = useAppState();
   const [selectedTab, setSelectedTab] = useState<"containers" | "images">("containers")
 
   if (isAppLoading) {
@@ -15,29 +15,42 @@ export default function Home() {
     );
   }
 
-  function getTabContent(){
-    if(selectedTab === "containers"){
-      
+  function getTabContent() {
+    if (selectedTab === "containers") {
+      fetchContainers();
+
+      return (
+        <div className='flex flex-col gap-2'>
+          <p className='font-bold'>Containers</p>
+          {containers.map(container => {
+            return <div key={container.id} className='bg-gray-200 w-full p-2 flex items-center gap-2'>
+              <p>{container.name}</p>
+              <p className='font-bold'>{container.status}</p>
+            </div>
+          })}
+        </div>
+      )
+
     } else if (selectedTab === "images") {
-      
+      fetchImages();
     }
   }
-  
+
   return (
-    <div className="flex flex-col h-screen w-screen text-xs gap-2 px-5">
+    <div className="flex h-screen w-screen text-xs gap-2 px-5">
       <div className="flex flex-col gap-3 font-bold border-r border-gray-200 h-screen w-[25%] py-5 max-w-[300px]">
-        <button className='flex items-center gap-1' onClick={()=>setSelectedTab("containers")}>
+        <button className='flex items-center gap-1' onClick={() => setSelectedTab("containers")}>
           <FiDatabase />
           <p>Containers</p>
         </button>
-        <button className='flex items-center gap-1' onClick={()=>setSelectedTab("images")}>
+        <button className='flex items-center gap-1' onClick={() => setSelectedTab("images")}>
           <FiImage />
           <p>Images</p>
         </button>
       </div>
 
-      <div>
-          {getTabContent()}
+      <div className='w-[75%] flex flex-col gap-2 py-4'>
+        {getTabContent()}
       </div>
     </div>
   );

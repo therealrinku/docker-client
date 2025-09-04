@@ -29,11 +29,13 @@ export function RootContextProvider({ children }: PropsWithChildren) {
     window.electron.ipcRenderer.sendMessage('ipc-load-images');
 
     window.electron.ipcRenderer.on('ipc-load-containers', (args) => {
-      setContainers(args as IContainer[]);
+      //@ts-expect-error
+      setContainers(JSON.parse(args));
     });
 
     window.electron.ipcRenderer.on('ipc-load-images', (args) => {
-      setImages(args as IImage[]);
+      //@ts-expect-error
+      setImages(JSON.parse(args));
     });
   }, []);
 
