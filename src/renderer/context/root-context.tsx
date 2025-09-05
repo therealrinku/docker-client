@@ -1,5 +1,4 @@
 import {
-  Dispatch,
   PropsWithChildren,
   createContext,
   useEffect,
@@ -42,7 +41,13 @@ export function RootContextProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     window.electron.ipcRenderer.on('ipc-error-event', (args) => {
       //@ts-expect-error
-      const message = args.message as string;
+      const message = (args.message ?? args) as string;
+
+      if(message.includes('Is the docker daemon running?')) {
+         window.electron.ipcRenderer.sendMessage('ipc-start-docker-daemon');
+         return;
+      }
+
       alert(message || 'Something went wrong');
     });
   }, []);
