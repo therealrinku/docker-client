@@ -12,11 +12,21 @@ export default function useAppState() {
     window.electron.ipcRenderer.sendMessage('ipc-load-images');
   }
 
+  function startContainer(id: number){
+    window.electron.ipcRenderer.sendMessage('ipc-start-container', id);
+  }
+
+  function stopContainer(id: number) {
+    window.electron.ipcRenderer.sendMessage('ipc-stop-container', id);
+  }
+
   return {
     images,
     containers,
     fetchContainers,
     fetchImages,
-    isAppLoading
+    isAppLoading,
+    startContainer,
+    stopContainer
   }
 }

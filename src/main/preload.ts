@@ -1,6 +1,12 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels = 'ipc-load-images' | 'ipc-load-containers' | 'ipc-error-event' | 'ipc-start-docker-daemon';
+export type Channels =
+  'ipc-load-images'
+  | 'ipc-load-containers'
+  | 'ipc-error-event'
+  | 'ipc-start-docker-daemon'
+  | 'ipc-start-container'
+  | 'ipc-stop-container';
 
 const electronHandler = {
   ipcRenderer: {

@@ -1,10 +1,10 @@
 import useAppState from '../hooks/use-app-state';
 import Loading2 from '../components/common/loading2';
-import { FiDatabase, FiImage } from 'react-icons/fi';
+import { FiDatabase, FiImage, FiPlay, FiStopCircle } from 'react-icons/fi';
 import { useState } from 'react';
 
 export default function Home() {
-  const { isAppLoading, fetchImages, fetchContainers, containers, images } = useAppState();
+  const { isAppLoading, fetchImages, fetchContainers, containers, images, startContainer, stopContainer } = useAppState();
   const [selectedTab, setSelectedTab] = useState<"containers" | "images">("containers")
 
   if (isAppLoading) {
@@ -26,6 +26,10 @@ export default function Home() {
             return <div key={container.id} className='bg-gray-200 w-full p-2 flex items-center gap-2'>
               <p>{container.name}</p>
               <p className='font-bold'>{container.status}</p>
+              {container.status === "exited" ?
+                <button className='ml-auto' onClick={() => startContainer(container.id)}><FiPlay /></button> :
+                <button className='ml-auto' onClick={() => stopContainer(container.id)}><FiStopCircle /></button>
+              }
             </div>
           })}
         </div>
@@ -37,7 +41,7 @@ export default function Home() {
       return (
         <div className='flex flex-col gap-2'>
           <p className='font-bold'>Images</p>
-          {images.map(image=> {
+          {images.map(image => {
             return <div key={image.id} className='bg-gray-200 w-full p-2 flex items-center gap-2'>
               <p>{image.repository.join(",")}</p>
               <p className='font-bold'>{image.size}</p>
