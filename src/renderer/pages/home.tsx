@@ -4,7 +4,7 @@ import { FiDatabase, FiImage, FiPlay, FiStopCircle } from 'react-icons/fi';
 import { useState } from 'react';
 
 export default function Home() {
-  const { isAppLoading, fetchImages, fetchContainers, containers, images, startContainer, stopContainer } = useAppState();
+  const { isAppLoading, containers, images, startContainer, stopContainer } = useAppState();
   const [selectedTab, setSelectedTab] = useState<"containers" | "images">("containers")
 
   if (isAppLoading) {
@@ -17,8 +17,6 @@ export default function Home() {
 
   function getTabContent() {
     if (selectedTab === "containers") {
-      fetchContainers();
-
       return (
         <div className='flex flex-col gap-2'>
           <p className='font-bold'>Containers</p>
@@ -36,8 +34,6 @@ export default function Home() {
       )
 
     } else if (selectedTab === "images") {
-      fetchImages();
-
       return (
         <div className='flex flex-col gap-2'>
           <p className='font-bold'>Images</p>
