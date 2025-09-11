@@ -1,6 +1,6 @@
 import useAppState from '../hooks/use-app-state';
 import Loading2 from '../components/common/loading2';
-import { FiDatabase, FiImage, FiPlay, FiStopCircle } from 'react-icons/fi';
+import { FiDatabase, FiImage, FiLoader, FiPlay, FiStopCircle } from 'react-icons/fi';
 import { useState } from 'react';
 
 export default function Home() {
@@ -24,9 +24,10 @@ export default function Home() {
             return <div key={container.id} className='bg-gray-200 w-full p-2 flex items-center gap-2'>
               <p>{container.name}</p>
               <p className='font-bold'>{container.status}</p>
-              {container.status === "exited" ?
-                <button className='ml-auto' onClick={() => startContainer(container.id)}><FiPlay /></button> :
-                <button className='ml-auto' onClick={() => stopContainer(container.id)}><FiStopCircle /></button>
+              {container.isProcessing ? <FiLoader className="ml-auto animate-spin"/>
+                : container.status === "exited" ?
+                  <button className='ml-auto' onClick={() => startContainer(container.id)}><FiPlay /></button> :
+                  <button className='ml-auto' onClick={() => stopContainer(container.id)}><FiStopCircle /></button>
               }
             </div>
           })}

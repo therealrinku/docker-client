@@ -3,25 +3,31 @@ import { exec } from 'child_process';
 
 export function ipcHandlers(_mainWindow: Electron.BrowserWindow | null) {
   ipcMain.on("ipc-start-container", (event, c_id) => {
-    exec(`docker start ${c_id}`, (error, stdout, stderr) => {
+    event.reply("ipc-toggle-container-is-processing-state", c_id);
+
+    exec(`docker start ${c_id}`, (error, _stdout, stderr) => {
       if (error || stderr) {
         return event.reply("ipc-error-event", error ?? stderr);
       }
 
       ipcMain.emit("ipc-load-containers", event);
+      event.reply("ipc-toggle-container-is-processing-state", c_id);
     })
   })
 
   ipcMain.on("ipc-stop-container", (event, c_id) => {
-    exec(`docker stop ${c_id}`, (error, stdout, stderr) => {
+    event.reply("ipc-toggle-container-is-processing-state", c_id);
+
+    exec(`docker stop ${c_id}`, (error, _stdout, stderr) => {
       if (error || stderr) {
         return event.reply("ipc-error-event", error ?? stderr);
       }
 
       ipcMain.emit("ipc-load-containers", event);
+      event.reply("ipc-toggle-container-is-processing-state", c_id);
     })
   })
-  
+
   ipcMain.on("ipc-start-docker-daemon", (event) => {
     exec("open -a Docker", (error, _stdout, stderr) => {
       if (error || stderr) {
