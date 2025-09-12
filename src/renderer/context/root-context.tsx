@@ -1,5 +1,4 @@
 import {
-    Dispatch,
   PropsWithChildren,
   createContext,
   useEffect,
@@ -11,14 +10,12 @@ interface IRootContext {
   isAppLoading: boolean;
   images: IImage[];
   containers: IContainer[];
-  toggleIsProcessingStateOfContainer: (c_id: string) => void;
 }
 
 export const RootContext = createContext<IRootContext>({
   isAppLoading: false,
   images: [],
   containers: [],
-  toggleIsProcessingStateOfContainer: (c_id: string) => {}
 });
 
 export function RootContextProvider({ children }: PropsWithChildren) {
@@ -55,15 +52,8 @@ export function RootContextProvider({ children }: PropsWithChildren) {
     });
   }, []);
 
-  function toggleIsProcessingStateOfContainer(c_id: string){
-    const copy = [...containers];
-    const c_index = copy.findIndex(c=>c.id.toString() === c_id);
-    copy[c_index].isProcessing = !copy[c_index].isProcessing;
-    setContainers(copy);
-  }
-
   return (
-    <RootContext.Provider value={{ isAppLoading, images, containers, toggleIsProcessingStateOfContainer}}>
+    <RootContext.Provider value={{ isAppLoading, images, containers }}>
       {children}
     </RootContext.Provider>
   );

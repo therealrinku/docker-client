@@ -51,11 +51,10 @@ export function ipcHandlers(_mainWindow: Electron.BrowserWindow | null) {
   })
 
   ipcMain.on("ipc-load-images", (event) => {
-    exec("docker image ls -q | xargs -I {} docker inspect {} | jq '[.[] | {id: .Id, repository: .RepoTags, size: .Size}]'", (error, stdout, stderr) => {
+    exec("docker image ls -q | xargs docker inspect | jq '[.[] | {id: .Id, repository: .RepoTags, size: .Size}]'", (error, stdout, stderr) => {
       if (error || stderr) {
         return event.reply("ipc-error-event", error ?? stderr);
       }
-
       event.reply("ipc-load-images", stdout);
     });
   })

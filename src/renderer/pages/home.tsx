@@ -6,7 +6,7 @@ import { useState } from 'react';
 export default function Home() {
   const { isAppLoading, containers, images, startContainer, stopContainer } = useAppState();
   const [selectedTab, setSelectedTab] = useState<"containers" | "images">("containers")
-
+console.log(images, "dd")
   if (isAppLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen w-screen text-xs gap-2">
