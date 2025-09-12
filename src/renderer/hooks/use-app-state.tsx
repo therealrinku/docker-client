@@ -20,6 +20,10 @@ export default function useAppState() {
     window.electron.ipcRenderer.sendMessage('ipc-stop-container', id);
   }
 
+  function deleteImage(id: number){
+    window.electron.ipcRenderer.sendMessage('ipc-delete-image', id);
+  }
+
   return {
     images,
     containers,
@@ -27,6 +31,7 @@ export default function useAppState() {
     fetchImages,
     isAppLoading,
     startContainer,
-    stopContainer
+    stopContainer,
+    deleteImage
   }
 }

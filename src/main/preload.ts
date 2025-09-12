@@ -7,7 +7,9 @@ export type Channels =
   | 'ipc-start-docker-daemon'
   | 'ipc-start-container'
   | 'ipc-stop-container'
-  | 'ipc-toggle-container-is-processing-state';
+  | 'ipc-toggle-container-is-processing-state'
+  | 'ipc-toggle-image-is-processing-state'
+  | 'ipc-delete-image';
 
 const electronHandler = {
   ipcRenderer: {

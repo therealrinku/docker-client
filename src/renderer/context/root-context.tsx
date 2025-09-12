@@ -27,6 +27,20 @@ export function RootContextProvider({ children }: PropsWithChildren) {
     window.electron.ipcRenderer.sendMessage('ipc-load-containers');
     window.electron.ipcRenderer.sendMessage('ipc-load-images');
 
+    window.electron.ipcRenderer.on('ipc-toggle-container-is-processing-state', (id) => {
+      const copy = [...containers];
+      const c_idx = copy.findIndex(ctr => ctr.id.toString() === id);
+      copy[c_idx].isProcessing = !copy[c_idx].isProcessing;
+      setContainers(copy);
+    })
+
+    window.electron.ipcRenderer.on('ipc-toggle-image-is-processing-state', (id) => {
+      const copy = [...images];
+      const c_idx = copy.findIndex(ctr => ctr.id.toString() === id);
+      copy[c_idx].isProcessing = !copy[c_idx].isProcessing;
+      setImages(copy);
+    })
+
     window.electron.ipcRenderer.on('ipc-load-containers', (args) => {
       //@ts-expect-error
       setContainers(JSON.parse(args));
@@ -43,9 +57,9 @@ export function RootContextProvider({ children }: PropsWithChildren) {
       //@ts-expect-error
       const message = (args.message ?? args) as string;
 
-      if(message.includes('Is the docker daemon running?')) {
-         window.electron.ipcRenderer.sendMessage('ipc-start-docker-daemon');
-         return;
+      if (message.includes('Is the docker daemon running?')) {
+        window.electron.ipcRenderer.sendMessage('ipc-start-docker-daemon');
+        return;
       }
 
       alert(message || 'Something went wrong');

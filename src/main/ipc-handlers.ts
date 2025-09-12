@@ -58,6 +58,19 @@ export function ipcHandlers(_mainWindow: Electron.BrowserWindow | null) {
       event.reply("ipc-load-images", stdout);
     });
   })
+
+  ipcMain.on("ipc-delete-image", (event, img_id) => {
+    event.reply("ipc-toggle-image-is-processing-state", img_id);
+
+    exec(`docker image rm ${img_id}`, (error, _stdout, stderr) => {
+      if (error || stderr) {
+        return event.reply("ipc-error-event", error ?? stderr);
+      }
+
+      event.reply("ipc-toggle-image-is-processing-state", img_id);
+      ipcMain.emit("ipc-load-images", event);
+    });
+  })
 }
 
 
