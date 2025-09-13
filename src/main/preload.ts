@@ -9,7 +9,8 @@ export type Channels =
   | 'ipc-stop-container'
   | 'ipc-toggle-container-is-processing-state'
   | 'ipc-toggle-image-is-processing-state'
-  | 'ipc-delete-image';
+  | 'ipc-delete-image'
+  | 'ipc-delete-container';
 
 const electronHandler = {
   ipcRenderer: {

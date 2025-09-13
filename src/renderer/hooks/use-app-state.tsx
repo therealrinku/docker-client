@@ -28,6 +28,14 @@ export default function useAppState() {
     window.electron.ipcRenderer.sendMessage('ipc-delete-image', id);
   }
 
+  function deleteContainer(id: number){
+    const confirmed= confirm("Are you sure want to delete this container?");
+    if(!confirmed){
+      return;
+    }
+    window.electron.ipcRenderer.sendMessage('ipc-delete-container', id);
+  }
+
   return {
     images,
     containers,
@@ -36,6 +44,7 @@ export default function useAppState() {
     isAppLoading,
     startContainer,
     stopContainer,
-    deleteImage
+    deleteImage,
+    deleteContainer
   }
 }
