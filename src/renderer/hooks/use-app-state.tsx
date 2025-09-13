@@ -21,6 +21,10 @@ export default function useAppState() {
   }
 
   function deleteImage(id: number){
+    const confirmed= confirm("Are you sure want to delete this image?");
+    if(!confirmed){
+      return;
+    }
     window.electron.ipcRenderer.sendMessage('ipc-delete-image', id);
   }
 
