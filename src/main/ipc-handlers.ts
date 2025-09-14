@@ -59,6 +59,24 @@ export function ipcHandlers(_mainWindow: Electron.BrowserWindow | null) {
     });
   })
 
+  ipcMain.on("ipc-load-volumes", (event) => {
+    exec("docker volume ls -q | xargs -I {} docker inspect {} | jq '[.[] | {driver: .Driver, name: .\"Volume Name\"}]'", (error, stdout, stderr) => {
+      if (error || stderr) {
+        return event.reply("ipc-error-event", error ?? stderr);
+      }
+      event.reply("ipc-load-volumes", stdout);
+    });
+  })
+
+  ipcMain.on("ipc-load-networks", (event) => {
+    exec("docker network ls | xargs docker inspect | jq '[.[] | {id: .\"Network Id\", name: .Name}]'", (error, stdout, stderr) => {
+      if (error || stderr) {
+        return event.reply("ipc-error-event", error ?? stderr);
+      }
+      event.reply("ipc-load-networks", stdout);
+    });
+  })
+
   ipcMain.on("ipc-delete-image", (event, img_id) => {
     event.reply("ipc-toggle-image-is-processing-state", img_id);
 

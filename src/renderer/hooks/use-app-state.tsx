@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { RootContext } from '../context/root-context';
 
 export default function useAppState() {
-  const { isAppLoading, images, containers } = useContext(RootContext);
+  const { isAppLoading, images, containers, volumes, networks } = useContext(RootContext);
 
   function fetchContainers() {
     window.electron.ipcRenderer.sendMessage('ipc-load-containers');
@@ -12,15 +12,15 @@ export default function useAppState() {
     window.electron.ipcRenderer.sendMessage('ipc-load-images');
   }
 
-  function startContainer(id: number){
+  function startContainer(id: string){
     window.electron.ipcRenderer.sendMessage('ipc-start-container', id);
   }
 
-  function stopContainer(id: number) {
+  function stopContainer(id: string) {
     window.electron.ipcRenderer.sendMessage('ipc-stop-container', id);
   }
 
-  function deleteImage(id: number){
+  function deleteImage(id: string){
     const confirmed= confirm("Are you sure want to delete this image?");
     if(!confirmed){
       return;
@@ -28,7 +28,7 @@ export default function useAppState() {
     window.electron.ipcRenderer.sendMessage('ipc-delete-image', id);
   }
 
-  function deleteContainer(id: number){
+  function deleteContainer(id: string){
     const confirmed= confirm("Are you sure want to delete this container?");
     if(!confirmed){
       return;
@@ -39,6 +39,8 @@ export default function useAppState() {
   return {
     images,
     containers,
+    volumes,
+    networks,
     fetchContainers,
     fetchImages,
     isAppLoading,

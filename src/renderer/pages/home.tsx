@@ -1,11 +1,11 @@
 import useAppState from '../hooks/use-app-state';
 import Loading2 from '../components/common/loading2';
-import { FiDatabase, FiImage, FiLoader, FiPlay, FiStopCircle, FiTrash2 } from 'react-icons/fi';
+import { FiChrome, FiDatabase, FiDisc, FiImage, FiLoader, FiPlay, FiStopCircle, FiTrash2 } from 'react-icons/fi';
 import { useState } from 'react';
 
 export default function Home() {
-  const { isAppLoading, containers, images, startContainer, stopContainer, deleteImage, deleteContainer } = useAppState();
-  const [selectedTab, setSelectedTab] = useState<"containers" | "images">("containers")
+  const { isAppLoading, containers, images, volumes, networks, startContainer, stopContainer, deleteImage, deleteContainer } = useAppState();
+  const [selectedTab, setSelectedTab] = useState<"containers" | "images" | "volumes" | "networks">("containers")
 
   if (isAppLoading) {
     return (
@@ -28,7 +28,7 @@ export default function Home() {
                 : container.status === "exited" ?
                   <div className='ml-auto flex items-center gap-4'>
                     <button onClick={() => startContainer(container.id)}><FiPlay /></button>
-                    <button onClick={() => deleteContainer(container.id)}><FiTrash2 color='red'/></button>
+                    <button onClick={() => deleteContainer(container.id)}><FiTrash2 color='red' /></button>
                   </div>
                   :
                   <button className='ml-auto' onClick={() => stopContainer(container.id)}><FiStopCircle /></button>
@@ -47,8 +47,30 @@ export default function Home() {
               <p>{image.repository.join(",")}</p>
               <p className='font-bold'>{image.size}</p>
               {image.isProcessing ? <FiLoader className="ml-auto animate-spin" /> :
-                <button className='ml-auto' onClick={() => deleteImage(image.id)}><FiTrash2 color='red'/></button>
+                <button className='ml-auto' onClick={() => deleteImage(image.id)}><FiTrash2 color='red' /></button>
               }
+            </div>
+          })}
+        </div>
+      )
+    } else if (selectedTab === "volumes") {
+      return (
+        <div className='flex flex-col gap-2'>
+          <p className='font-bold'>Volumes</p>
+          {volumes.map(volume => {
+            return <div key={volume.name} className='bg-gray-200 w-full p-2 flex items-center gap-2'>
+              <p>{volume.name}</p>
+            </div>
+          })}
+        </div>
+      )
+    } else if (selectedTab === "networks") {
+      return (
+        <div className='flex flex-col gap-2'>
+          <p className='font-bold'>Networks</p>
+          {networks.map(network => {
+            return <div key={network.id} className='bg-gray-200 w-full p-2 flex items-center gap-2'>
+              <p>{network.name}</p>
             </div>
           })}
         </div>
@@ -66,6 +88,14 @@ export default function Home() {
         <button className='flex items-center gap-1' onClick={() => setSelectedTab("images")}>
           <FiImage />
           <p>Images</p>
+        </button>
+        <button className='flex items-center gap-1' onClick={() => setSelectedTab("volumes")}>
+          <FiDisc />
+          <p>Volumes</p>
+        </button>
+        <button className='flex items-center gap-1' onClick={() => setSelectedTab("networks")}>
+          <FiChrome />
+          <p>Networks</p>
         </button>
       </div>
 

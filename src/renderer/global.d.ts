@@ -1,12 +1,22 @@
+export interface IVolume {
+  driver: string;
+  name: string;
+}
+
+export interface INetwork {
+  id: string;
+  name: string;
+}
+
 export interface IImage {
-  id: number;
+  id: string;
   repository: string[];
   size: string;
   isProcessing: boolean;
 }
 
 export interface IContainer {
-  id: number;
+  id: string;
   name: string;
   status: 'exited' | 'running';
   isProcessing: boolean;
