@@ -88,6 +88,12 @@ export function RootContextProvider({ children }: PropsWithChildren) {
     window.electron.ipcRenderer.on('ipc-error-event', (error) => {
       //@ts-expect-error
       const message = (error.message ?? error) as string;
+
+      if(message.includes("Is the docker daemon running?")){
+        setIsDaemonRunning(false);
+        return;
+      }
+      
       alert(message || 'Something went wrong');
     });
   }, []);
