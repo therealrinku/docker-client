@@ -7,6 +7,7 @@ export type Channels =
   | 'ipc-load-networks'
   | 'ipc-error-event'
   | 'ipc-start-docker-daemon'
+  | 'ipc-check-docker-daemon-status'
   | 'ipc-start-container'
   | 'ipc-stop-container'
   | 'ipc-toggle-container-is-processing-state'

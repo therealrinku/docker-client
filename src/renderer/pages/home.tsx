@@ -1,16 +1,41 @@
 import useAppState from '../hooks/use-app-state';
 import Loading2 from '../components/common/loading2';
-import { FiChrome, FiDatabase, FiDisc, FiImage, FiLoader, FiPlay, FiStopCircle, FiTrash2 } from 'react-icons/fi';
+import { FiChrome, FiDatabase, FiDisc, FiImage, FiLoader, FiPlay, FiServer, FiStopCircle, FiTrash2 } from 'react-icons/fi';
 import { useState } from 'react';
 
 export default function Home() {
-  const { isAppLoading, containers, images, volumes, networks, startContainer, stopContainer, deleteImage, deleteContainer } = useAppState();
+  const {
+    isAppLoading,
+    isDaemonRunning,
+    checkDockerDaemonStatus,
+    containers,
+    images,
+    volumes,
+    networks,
+    startContainer,
+    stopContainer,
+    deleteImage,
+    deleteContainer
+  } = useAppState();
   const [selectedTab, setSelectedTab] = useState<"containers" | "images" | "volumes" | "networks">("containers")
 
   if (isAppLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen w-screen text-xs gap-2">
         <Loading2 />
+      </div>
+    );
+  }
+
+  if (!isDaemonRunning) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen w-screen text-xs gap-5">
+        <FiServer size={50} />
+        <p className='text-center'>
+          Docker Daemon isn't running. <br />
+          please start it with <b className='bg-gray-300'>open -a Docker</b> command.
+        </p>
+        <button onClick={checkDockerDaemonStatus} className='border border-gray-400 px-5 py-2'>Retry</button>
       </div>
     );
   }

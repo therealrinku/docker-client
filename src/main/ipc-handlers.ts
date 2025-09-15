@@ -34,9 +34,18 @@ export function ipcHandlers(_mainWindow: Electron.BrowserWindow | null) {
         return event.reply("ipc-error-event", error ?? stderr);
       }
 
-
       ipcMain.emit("ipc-load-containers", event);
       ipcMain.emit("ipc-load-images", event);
+    })
+  })
+
+  ipcMain.on("ipc-check-docker-daemon-status", (event) => {
+    exec("docker info", (error, stdout, stderr) => {
+      const isDaemonNotRunning = error?.message?.includes('Is the docker daemon running?')
+        || stdout.includes('Is the docker daemon running?')
+        || stderr.includes('Is the docker daemon running?');
+
+      event.reply("ipc-check-docker-daemon-status", !isDaemonNotRunning);
     })
   })
 
