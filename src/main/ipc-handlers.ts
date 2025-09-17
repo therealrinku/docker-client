@@ -50,7 +50,7 @@ export function ipcHandlers(_mainWindow: Electron.BrowserWindow | null) {
   })
 
   ipcMain.on("ipc-load-containers", (event) => {
-    exec("docker inspect $(docker ps -a -q) | jq '[.[] | {id: .Id, name: .Name, status: .State.Status, ports: .NetworkSettings.Ports}]'", (error, stdout, stderr) => {
+    exec("docker ps -a -q | xargs docker inspect | jq '[.[] | {id: .Id, name: .Name, status: .State.Status, ports: .NetworkSettings.Ports}] | flatten'", (error, stdout, stderr) => {
       if (error || stderr) {
         return event.reply("ipc-error-event", error ?? stderr);
       }
@@ -60,7 +60,7 @@ export function ipcHandlers(_mainWindow: Electron.BrowserWindow | null) {
   })
 
   ipcMain.on("ipc-load-images", (event) => {
-    exec("docker image ls -q | xargs docker inspect | jq '[.[] | {id: .Id, repository: .RepoTags, size: .Size}]'", (error, stdout, stderr) => {
+    exec("docker image ls -q | xargs docker inspect | jq '[.[] | {id: .Id, repository: .RepoTags, size: .Size}] | flatten'", (error, stdout, stderr) => {
       if (error || stderr) {
         return event.reply("ipc-error-event", error ?? stderr);
       }
@@ -69,7 +69,7 @@ export function ipcHandlers(_mainWindow: Electron.BrowserWindow | null) {
   })
 
   ipcMain.on("ipc-load-volumes", (event) => {
-    exec("docker volume ls -q | xargs -I {} docker inspect {} | jq '[.[] | {driver: .Driver, name: .\"Volume Name\"}]'", (error, stdout, stderr) => {
+    exec("docker volume ls -q | xargs docker inspect | jq '[.[] | {driver: .Driver, name: .Name}] | flatten'", (error, stdout, stderr) => {
       if (error || stderr) {
         return event.reply("ipc-error-event", error ?? stderr);
       }
@@ -78,7 +78,7 @@ export function ipcHandlers(_mainWindow: Electron.BrowserWindow | null) {
   })
 
   ipcMain.on("ipc-load-networks", (event) => {
-    exec("docker network ls | xargs docker inspect | jq '[.[] | {id: .\"Network Id\", name: .Name}]'", (error, stdout, stderr) => {
+    exec("docker network ls -q | xargs docker inspect | jq '[.[] | {id: .Id, name: .Name}] | flatten'", (error, stdout, stderr) => {
       if (error || stderr) {
         return event.reply("ipc-error-event", error ?? stderr);
       }

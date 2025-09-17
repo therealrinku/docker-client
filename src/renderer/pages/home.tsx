@@ -18,7 +18,7 @@ export default function Home() {
     deleteContainer
   } = useAppState();
   const [selectedTab, setSelectedTab] = useState<"containers" | "images" | "volumes" | "networks">("containers")
-
+  console.log(containers)
   if (isAppLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen w-screen text-xs gap-2">
