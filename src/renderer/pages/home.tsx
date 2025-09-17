@@ -15,10 +15,12 @@ export default function Home() {
     startContainer,
     stopContainer,
     deleteImage,
-    deleteContainer
+    deleteContainer,
+    deleteNetwork,
+    deleteVolume
   } = useAppState();
   const [selectedTab, setSelectedTab] = useState<"containers" | "images" | "volumes" | "networks">("containers")
-  console.log(containers)
+
   if (isAppLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen w-screen text-xs gap-2">
@@ -83,9 +85,14 @@ export default function Home() {
         <div className='flex flex-col gap-2'>
           <p className='font-bold'>Volumes</p>
           {volumes.map(volume => {
-            return <div key={volume.name} className='bg-gray-200 w-full p-2 flex items-center gap-2'>
-              <p>{volume.name}</p>
-            </div>
+            return (
+              <div key={volume.name} className='bg-gray-200 w-full p-2 flex items-center gap-2'>
+                <p>{volume.name}</p>
+                {volume.isProcessing ? <FiLoader className="ml-auto animate-spin" /> :
+                  <button className='ml-auto' onClick={() => deleteVolume(volume.name)}><FiTrash2 color='red' /></button>
+                }
+              </div>
+            )
           })}
         </div>
       )
@@ -96,6 +103,9 @@ export default function Home() {
           {networks.map(network => {
             return <div key={network.id} className='bg-gray-200 w-full p-2 flex items-center gap-2'>
               <p>{network.name}</p>
+              {network.isProcessing ? <FiLoader className="ml-auto animate-spin" /> :
+                <button className='ml-auto' onClick={() => deleteNetwork(network.id)}><FiTrash2 color='red' /></button>
+              }
             </div>
           })}
         </div>

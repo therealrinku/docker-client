@@ -28,6 +28,22 @@ export default function useAppState() {
     window.electron.ipcRenderer.sendMessage('ipc-delete-image', id);
   }
 
+  function deleteVolume(name: string) {
+    const confirmed = confirm("Are you sure want to delete this volume?");
+    if (!confirmed) {
+      return;
+    }
+    window.electron.ipcRenderer.sendMessage('ipc-delete-volume', name);
+  }
+
+  function deleteNetwork(id: string) {
+    const confirmed = confirm("Are you sure want to delete this network?");
+    if (!confirmed) {
+      return;
+    }
+    window.electron.ipcRenderer.sendMessage('ipc-delete-network', id);
+  }
+
   function deleteContainer(id: string) {
     const confirmed = confirm("Are you sure want to delete this container?");
     if (!confirmed) {
@@ -52,6 +68,8 @@ export default function useAppState() {
     stopContainer,
     deleteImage,
     deleteContainer,
+    deleteNetwork,
+    deleteVolume,
     isDaemonRunning,
     checkDockerDaemonStatus
   }

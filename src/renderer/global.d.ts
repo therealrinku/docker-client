@@ -1,11 +1,13 @@
 export interface IVolume {
   driver: string;
   name: string;
+  isProcessing: boolean;
 }
 
 export interface INetwork {
   id: string;
   name: string;
+  isProcessing: boolean;
 }
 
 export interface IImage {

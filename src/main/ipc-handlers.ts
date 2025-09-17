@@ -111,6 +111,34 @@ export function ipcHandlers(_mainWindow: Electron.BrowserWindow | null) {
       ipcMain.emit("ipc-load-containers", event);
     });
   })
+
+  
+  ipcMain.on("ipc-delete-volume", (event, vol_name) => {
+    event.reply("ipc-toggle-volume-is-processing-state", vol_name);
+
+    exec(`docker volume rm ${vol_name}`, (error, _stdout, stderr) => {
+      if (error || stderr) {
+        return event.reply("ipc-error-event", error ?? stderr);
+      }
+
+      event.reply("ipc-toggle-volume-is-processing-state", vol_name);
+      ipcMain.emit("ipc-load-volumes", event);
+    });
+  })
+
+  
+  ipcMain.on("ipc-delete-network", (event, net_id) => {
+    event.reply("ipc-toggle-network-is-processing-state", net_id);
+
+    exec(`docker network rm ${net_id}`, (error, _stdout, stderr) => {
+      if (error || stderr) {
+        return event.reply("ipc-error-event", error ?? stderr);
+      }
+
+      event.reply("ipc-toggle-network-is-processing-state", net_id);
+      ipcMain.emit("ipc-load-networks", event);
+    });
+  })
 }
 
 

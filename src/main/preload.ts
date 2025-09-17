@@ -12,7 +12,11 @@ export type Channels =
   | 'ipc-stop-container'
   | 'ipc-toggle-container-is-processing-state'
   | 'ipc-toggle-image-is-processing-state'
+  | 'ipc-toggle-network-is-processing-state'
+  | 'ipc-toggle-volume-is-processing-state'
   | 'ipc-delete-image'
+  | 'ipc-delete-volume'
+  | 'ipc-delete-network'
   | 'ipc-delete-container';
 
 const electronHandler = {
