@@ -1,6 +1,6 @@
 import useAppState from '../hooks/use-app-state';
 import Loading2 from '../components/common/loading2';
-import { FiChrome, FiDatabase, FiDisc, FiImage, FiLoader, FiPlay, FiServer, FiStopCircle, FiTrash2 } from 'react-icons/fi';
+import { FiBox, FiChrome, FiDatabase, FiDisc, FiImage, FiLoader, FiPlay, FiServer, FiStopCircle, FiTrash2 } from 'react-icons/fi';
 import { useState } from 'react';
 
 export default function Home() {
@@ -113,6 +113,25 @@ export default function Home() {
     }
   }
 
+  function getEmptyState() {
+    let itemsList;
+    if (selectedTab === "containers") itemsList = containers;
+    else if (selectedTab === "images") itemsList = images;
+    else if (selectedTab === "volumes") itemsList = volumes;
+    else if (selectedTab === "networks") itemsList = networks;
+
+    if (itemsList && itemsList.length === 0) {
+      return (
+        <div className='flex items-center gap-1'>
+          <FiBox size={20} />
+          <p>No any {selectedTab} found.</p>
+        </div>
+      )
+    }
+
+    return null;
+  }
+
   return (
     <div className="flex h-screen w-screen text-xs gap-2 px-5">
       <div className="flex flex-col gap-3 font-bold border-r border-gray-200 h-screen w-[25%] py-5 max-w-[300px]">
@@ -136,6 +155,7 @@ export default function Home() {
 
       <div className='w-[75%] flex flex-col gap-2 py-4'>
         {getTabContent()}
+        {getEmptyState()}
       </div>
     </div>
   );
