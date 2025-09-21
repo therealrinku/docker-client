@@ -4,6 +4,10 @@ import { RootContext } from '../context/root-context';
 export default function useAppState() {
   const { isAppLoading, isDaemonRunning, images, containers, volumes, networks } = useContext(RootContext);
 
+  function createVolume(name: string){
+    window.electron.ipcRenderer.sendMessage('ipc-create-volume', name);
+  }
+
   function fetchContainers() {
     window.electron.ipcRenderer.sendMessage('ipc-load-containers');
   }
@@ -71,6 +75,7 @@ export default function useAppState() {
     deleteNetwork,
     deleteVolume,
     isDaemonRunning,
-    checkDockerDaemonStatus
+    checkDockerDaemonStatus,
+    createVolume
   }
 }

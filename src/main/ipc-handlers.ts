@@ -146,6 +146,15 @@ export function ipcHandlers(_mainWindow: Electron.BrowserWindow | null) {
       event.reply("ipc-error-event", err);
     }
   })
+
+  ipcMain.on("ipc-create-volume", async (event, volume_name) => {
+    try {
+      await asyncExec(`docker volume create ${volume_name}`);
+      ipcMain.emit("ipc-load-volumes", event);
+    } catch (err) {
+      event.reply("ipc-error-event", err);
+    }
+  })
 }
 
 

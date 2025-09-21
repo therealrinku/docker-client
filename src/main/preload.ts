@@ -17,7 +17,8 @@ export type Channels =
   | 'ipc-delete-image'
   | 'ipc-delete-volume'
   | 'ipc-delete-network'
-  | 'ipc-delete-container';
+  | 'ipc-delete-container'
+  | 'ipc-create-volume'
 
 const electronHandler = {
   ipcRenderer: {
