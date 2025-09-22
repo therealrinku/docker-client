@@ -100,8 +100,8 @@ export default function Home() {
                 />
                 <button
                   onClick={() => {
-                    setNewVolumeName("");
                     createVolume(newVolumeName);
+                    setNewVolumeName("");
                     setShowCreateVolumeModal(false);
                   }}
                   disabled={!newVolumeName.trim() || /\s/.test(newVolumeName)}
