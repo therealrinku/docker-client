@@ -17,9 +17,12 @@ export default function Home() {
     deleteImage,
     deleteContainer,
     deleteNetwork,
-    deleteVolume
+    deleteVolume,
+    createVolume
   } = useAppState();
   const [selectedTab, setSelectedTab] = useState<"containers" | "images" | "volumes" | "networks">("containers")
+  const [showCreateVolumeModal, setShowCreateVolumeModal] = useState(false);
+  const [newVolumeName, setNewVolumeName] = useState("");
 
   if (isAppLoading) {
     return (
@@ -83,7 +86,44 @@ export default function Home() {
     } else if (selectedTab === "volumes") {
       return (
         <div className='flex flex-col gap-2'>
-          <p className='font-bold'>Volumes</p>
+          {/* TODO: MOVE THIS TO SEPERATE MODAL COMPONENT */}
+          {showCreateVolumeModal && (
+            <div className='fixed top-0 left-0 bg-gray-200 w-full h-full flex flex-col items-center justify-center'>
+              <div className='flex flex-col justify-center bg-gray-300 p-5 w-[50%] gap-3'>
+                <b>Create new volume</b>
+                <input
+                  className="bg-gray-200 outline-none p-2"
+                  placeholder='Volume Name (no spaces allowed)'
+                  type="text"
+                  value={newVolumeName}
+                  onChange={(e) => setNewVolumeName(e.target.value)}
+                />
+                <button
+                  onClick={() => {
+                    setNewVolumeName("");
+                    createVolume(newVolumeName);
+                    setShowCreateVolumeModal(false);
+                  }}
+                  disabled={!newVolumeName.trim() || /\s/.test(newVolumeName)}
+                  className="bg-green-500 outline-none p-2">
+                  Create
+                </button>
+                <button
+                  onClick={() => {
+                    setNewVolumeName("");
+                    setShowCreateVolumeModal(false)
+                  }}
+                  className="bg-gray-400 outline-none p-2">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+
+          <div className='flex items-center justify-between'>
+            <p className='font-bold'>Volumes</p>
+            <button onClick={() => setShowCreateVolumeModal(true)} className='font-bold underline'>Create new volume</button>
+          </div>
           {volumes.map(volume => {
             return (
               <div key={volume.name} className='bg-gray-200 w-full p-2 flex items-center gap-2'>
